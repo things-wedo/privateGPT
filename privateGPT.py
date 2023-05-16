@@ -23,6 +23,14 @@ def main():
     retriever = db.as_retriever()
     # Prepare the LLM
     callbacks = [StreamingStdOutCallbackHandler()]
+    if model_type == "LlamaCpp":
+        llm = LlamaCpp(model_path=model_path, n_ctx=model_n_ctx, callbacks=callbacks, verbose=False)
+    elif model_type == "GPT4All":
+        llm = GPT4All(model=model_path, n_ctx=model_n_ctx, backend='gptj', callbacks=callbacks, verbose=False)
+    else:
+        print(f"Model {model_type} not supported!")
+        exit;
+
     match model_type:
         case "LlamaCpp":
             llm = LlamaCpp(model_path=model_path, n_ctx=model_n_ctx, callbacks=callbacks, verbose=False)
